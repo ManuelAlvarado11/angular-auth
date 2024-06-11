@@ -14,19 +14,21 @@ export class LoginPageComponent {
   private authService = inject(AuthService)
 
   public myForm: FormGroup = this.fb.group({
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(6)]],
+    email: ['manuel@mail.com', [Validators.required, Validators.email]],
+    password: ['123456', [Validators.required, Validators.minLength(6)]],
   })
 
   //Methods
-  public login(): boolean{
+  public login(){
     const { email, password} = this.myForm.value
-    this.authService.login(email, password).subscribe(
-      data => {
-        console.log({data});
+    this.authService.login(email, password).subscribe({
+      next: () => {
+        console.log('Todo bien');
+      },
+      error: (err) => {
+        console.log({err});
       }
-    )
-    return true
+    })
   }
 
 }
