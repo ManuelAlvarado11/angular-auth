@@ -18,10 +18,11 @@ export class AppComponent {
     if (this.authService.authStatus() === AuthStatus.checking) {
       return false;
     }
-
     return true;
   });
 
+
+  // Automaticamente cuando el estado cambia, se dispara el effect
   public authStatusChangedEffect = effect(() => {
     console.log('Auth status', this.authService.authStatus());
     switch (this.authService.authStatus()) {
