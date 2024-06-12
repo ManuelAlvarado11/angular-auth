@@ -15,8 +15,8 @@ export class AuthService {
   private _currentUser = signal<User|null>(null);
   private _authStatus = signal<AuthStatus>(AuthStatus.checking);
 
-  public currentuser = computed(()=> this._currentUser);
-  public authStatus = computed(()=> this._authStatus);
+  public currentuser = computed(()=> this._currentUser());
+  public authStatus = computed(()=> this._authStatus());
 
 
   // Constructor
@@ -28,11 +28,10 @@ export class AuthService {
     const body = { email, password}
 
     return this.http.post<LoginResponse>(url, body).pipe(
-      tap(({ user, token}) => {
+      tap(({user, token}) => {
         this._currentUser.set(user);
         this._authStatus.set(AuthStatus.authenticated)
         localStorage.setItem('token', token)
-        console.log(user, token);
       }),
       map( () => true),
       catchError( err => throwError(()=> err.error.message ))
